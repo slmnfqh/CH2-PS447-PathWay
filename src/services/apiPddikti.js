@@ -20,6 +20,12 @@ const getProdiAtUniversity = (body) => get(`v2/detail_pt_prodi/${body}`);
 const getDetailProdi = (body) => get(`detail_prodi/${body}`);
 const getSearchProdi = (body) => get(`hit/${body}`);
 
+// mencari mahasiswa
+// const getSearchMhs = (body) => get(`hit_mhs/${body}`);
+
+// mencari detail mahasiswa
+// const getDetailMhs = (body) => get(`detail_mhs/${body}`);
+
 module.exports = {
   getSearchUniversity,
   getDataUniversity,
