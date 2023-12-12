@@ -2,18 +2,18 @@
 
 # Android API Ci/CD pipelines
 
-name: Latihan Backend API Github CI/CD pipelines
+name: Backend API CI/CD pipelines
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   deploy:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
 
     steps:
       - name: Login
@@ -39,7 +39,7 @@ jobs:
       - name: Deploy Docker Image
         run: |
           gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
-            --image asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan \
+            --image $IMAGE_NAME \
             --region asia-southeast2 \
             --platform managed \
             --allow-unauthenticated \
