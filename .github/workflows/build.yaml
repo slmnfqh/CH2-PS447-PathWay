@@ -31,7 +31,6 @@ jobs:
 
       - name: Build Docker image
         run: |
-          echo "Building image: $IMAGE_NAME"
           docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
 
       - name: Push Docker Image
