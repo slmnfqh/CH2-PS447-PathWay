@@ -6,7 +6,7 @@ name: Backend API CI/CD pipelines
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   deploy:
