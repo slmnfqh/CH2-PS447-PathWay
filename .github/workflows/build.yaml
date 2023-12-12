@@ -13,7 +13,7 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+      IMAGE_NAME: asia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
 
     steps:
       - name: Login
@@ -29,12 +29,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build Dockerr image
+      - name: Build Docker image
         run: |
           docker build -t $IMAGE_NAME .
 
       - name: Push Docker Image
-        run: docker push $IMAGE_NAME:latest
+        run: docker push $IMAGE_NAME
 
       - name: Deploy Docker Image
         run: |
@@ -44,4 +44,5 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --port 5000 \
-            --set-env-vars="DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}"
+            --set-env-vars="DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" \
+            --update-env-vars=DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
