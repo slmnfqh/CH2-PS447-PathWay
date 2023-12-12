@@ -31,14 +31,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_NAME .
+          docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan/nginx:latest .
 
-      - name: Push Docker Image to Artifact Registry
-        run: |-
-          docker tag $IMAGE_NAME:latest 
-          docker tag $IMAGE_NAME:latest 
-          docker push us-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}
-          docker push us-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}
+      - name: Push Docker Image
+        run: docker push asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan/nginx:latest .
 
       - name: Deploy Docker Image
         run: |
