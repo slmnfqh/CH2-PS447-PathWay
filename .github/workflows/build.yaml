@@ -13,7 +13,7 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: gcr.io/latihan-capstone-deploy/asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan
+      IMAGE_NAME: gcr.io/asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan
 
     steps:
       - name: Login
