@@ -13,7 +13,7 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
 
     steps:
       - name: Login
@@ -31,10 +31,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
+          docker build -t $IMAGE_NAME .
 
       - name: Push Docker Image
         run: docker push $IMAGE_NAME
+
       - name: Deploy Docker Image
         run: |
           gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
