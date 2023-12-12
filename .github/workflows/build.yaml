@@ -36,7 +36,7 @@ jobs:
       - name: Push Docker Image
         run: docker push $IMAGE_NAME
 
-      - name: Deploy Dockerr Image
+      - name: Deploy Docker Image
         run: |
           gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
             --image $IMAGE_NAME \
