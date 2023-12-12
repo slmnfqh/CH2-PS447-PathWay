@@ -34,8 +34,7 @@ jobs:
           docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
 
       - name: Push Docker Image
-        run: docker push asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
-
+        run: docker push $IMAGE_NAME
       - name: Deploy Docker Image
         run: |
           gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
