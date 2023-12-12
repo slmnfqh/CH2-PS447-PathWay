@@ -33,8 +33,12 @@ jobs:
         run: |
           docker build -t $IMAGE_NAME .
 
-      - name: Push Docker Image
-        run: docker push $IMAGE_NAME
+      - name: Push Docker Image to Artifact Registry
+        run: |-
+          docker tag $IMAGE_NAME:latest 
+          docker tag $IMAGE_NAME:latest 
+          docker push us-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}
+          docker push us-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy Docker Image
         run: |
