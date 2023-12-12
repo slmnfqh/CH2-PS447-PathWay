@@ -29,7 +29,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build Docker image
+      - name: Build Dockerr image
         run: |
           docker build -t $IMAGE_NAME .
 
