@@ -13,7 +13,7 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: gar.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+      IMAGE_NAME: asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan
 
     steps:
       - name: Login
@@ -35,12 +35,12 @@ jobs:
           docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
 
       - name: Push Docker Image
-        run: docker push $IMAGE_NAME
+        run: docker push asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan
 
       - name: Deploy Docker Image
         run: |
           gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
-            --image $IMAGE_NAME \
+            --image asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan \
             --region asia-southeast2 \
             --platform managed \
             --allow-unauthenticated \
