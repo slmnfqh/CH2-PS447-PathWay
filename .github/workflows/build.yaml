@@ -31,10 +31,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan/nginx:latest .
+          docker build -t asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
 
       - name: Push Docker Image
-        run: docker push asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan/nginx:latest .
+        run: docker push asia-southeast2-docker.pkg.dev/latihan-capstone-deploy/capstone-latihan .
 
       - name: Deploy Docker Image
         run: |
