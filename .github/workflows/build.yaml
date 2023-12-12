@@ -31,6 +31,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          echo "Building image: $IMAGE_NAME"
           docker build -t $IMAGE_NAME .
 
       - name: Push Docker Image
