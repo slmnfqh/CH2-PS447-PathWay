@@ -10,15 +10,15 @@ const {
 } = require("../services/apiPddikti");
 
 const searchUniversity = async (req, res) => {
-  const query = req.query.univ;
-  if (!query) {
+  const { universitas } = req.body;
+  if (!req.body || !universitas) {
     return res.status(400).json({
       status: "failed",
       message: "Tidak ada universitas dicari",
     });
   }
   try {
-    const response = await getSearchUniversity(query);
+    const response = await getSearchUniversity(universitas);
     if (
       response.pt.length === 1 &&
       response.pt.text ===
@@ -39,11 +39,11 @@ const searchUniversity = async (req, res) => {
         index["website-link"].lastIndexOf("/") + 1
       );
       return {
-        id: id,
-        university: university[1],
-        npsn: npsn[1],
-        singkatan: singkatan[1],
-        alamat: alamat[1],
+        id,
+        university,
+        npsn,
+        singkatan,
+        alamat,
       };
     });
     res.json({
@@ -52,10 +52,12 @@ const searchUniversity = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(400).json({
+    const statusCode = error.statusCode || 400;
+    const message = error.message || "Terjadi kesalahan";
+
+    res.status(statusCode).json({
       status: "failed",
-      message: error.message,
+      message,
     });
   }
 };
