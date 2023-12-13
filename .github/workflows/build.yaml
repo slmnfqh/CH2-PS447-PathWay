@@ -1,7 +1,7 @@
 # @format
 
 # Android API CI/CD pipelines
-name: Deploy Backend CI/CD Pipelinee
+name: Deploy Backend CI/CD Pipeline
 
 on:
   push:
