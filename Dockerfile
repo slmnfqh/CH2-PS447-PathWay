@@ -16,9 +16,9 @@ RUN npm install
 COPY . .
 
 # Menggunakan variabel lingkungan untuk menentukan port yang akan diexpose
-ARG 8080
-ENV PORT 8080
-EXPOSE 8080/tcp
+ARG PORT
+ENV PORT $PORT
+EXPOSE $PORT
 
 # Menjalankan perintah untuk menjalankan aplikasi
 CMD ["npm", "start"]
