@@ -18,7 +18,7 @@ COPY . .
 # Menggunakan variabel lingkungan untuk menentukan port yang akan diexpose
 ARG PORT
 ENV PORT $PORT
-EXPOSE $PORT
+EXPOSE 4000/tcp
 
 # Menjalankan perintah untuk menjalankan aplikasi
 CMD ["npm", "start"]
