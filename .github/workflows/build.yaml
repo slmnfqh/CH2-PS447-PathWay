@@ -26,8 +26,8 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-          docker build -t asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest .
-          docker push asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest
+          docker build -t asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy .
+          docker push asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy
 
       # - name: Deploy Docker Image to Cloud Run
       #   run: |
