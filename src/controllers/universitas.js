@@ -10,15 +10,15 @@ const {
 } = require("../services/apiPddikti");
 
 const searchUniversity = async (req, res) => {
-  const { universitas } = req.body;
-  if (!req.body || !universitas) {
+  const query = req.query.univ;
+  if (!query) {
     return res.status(400).json({
       status: "failed",
       message: "Tidak ada universitas dicari",
     });
   }
   try {
-    const response = await getSearchUniversity(universitas);
+    const response = await getSearchUniversity(query);
     if (
       response.pt.length === 1 &&
       response.pt.text ===
