@@ -1,8 +1,7 @@
 # @format
 
-# Android API Ci/CD pipelines
-
-name: Backend API CI/CD pipelines
+# Android API CI/CD pipelines
+name: Deploy Backend CI/CD Pipeline
 
 on:
   push:
@@ -10,36 +9,30 @@ on:
 
 jobs:
   deploy:
-    name: Setup Gcloud Account
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: asia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
-
     steps:
-      - name: Login
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_email: ${{ secrets.GCP_EMAIL }}
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-
-      - name: Configure Docker
-        run: gcloud auth configure-docker --quiet
-
-      - name: Checkout repository
+      - name: Code Checkout
         uses: actions/checkout@v2
 
-      - name: Build Docker image
+      - name: Install the gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          export_default_credentials: true
+
+      - name: Build and Push Docker Image
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
-          docker build -t $IMAGE_NAME .
+          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+          docker build -t asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest .
+          docker push asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest
 
-      - name: Push Docker Image
-        run: docker push $IMAGE_NAME
-
-      - name: Deploy Dockerr Image
+      - name: Deploy Docker Image to cloud run
         run: |
           gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
-            --image $IMAGE_NAME \
+            --image asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest \
             --region asia-southeast2 \
             --platform managed \
             --allow-unauthenticated \
