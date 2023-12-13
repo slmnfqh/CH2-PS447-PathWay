@@ -25,10 +25,12 @@ jobs:
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
-
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest .
           docker push us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest
+
+      - name: Debug
+        run: ls -R
 
       # - name: Deploy Docker Image to Cloud Run
       #   run: |
