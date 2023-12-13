@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/index.js"
   },
+  "startArg": "--port $PORT",
   "keywords": [],
   "author": "Sulaiman Faqih",
   "license": "ISC",

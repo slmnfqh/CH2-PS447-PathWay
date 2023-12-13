@@ -21,4 +21,4 @@ ENV PORT $PORT
 EXPOSE $PORT
 
 # Menjalankan perintah untuk menjalankan aplikasi
-CMD ["npm", "start"]
+CMD ["npm", "start", "$startArg"]
