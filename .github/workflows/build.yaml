@@ -21,6 +21,10 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           export_default_credentials: true
 
+      - name: Set up Prisma
+        run: |
+          npx prisma generate
+
       - name: Build and Push Docker Imagee
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
