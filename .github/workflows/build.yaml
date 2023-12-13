@@ -27,7 +27,6 @@ jobs:
         run: |
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
           docker build -t asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest .
-          docker run -p 8080:8080 asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest
           docker push asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest
 
       # - name: Deploy Docker Image to Cloud Run
