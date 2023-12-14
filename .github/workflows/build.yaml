@@ -11,7 +11,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Code Checkoutt
+      - name: Code Checkout
         uses: actions/checkout@v2
 
       - name: Install the gcloud CLI
