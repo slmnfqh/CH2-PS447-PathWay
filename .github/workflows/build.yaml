@@ -1,7 +1,8 @@
 # @format
 
 # Android API CI/CD pipelines
-name: Deploy Backend CI/CD Pipeline
+
+name: Pipeline CI/CD untuk Deploy Backend
 
 on:
   push:
@@ -11,41 +12,101 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Code Checkout
+      - name: Checkout Kode
         uses: actions/checkout@v2
 
-      - name: Install the gcloud CLI
+      - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT }}
           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           export_default_credentials: true
 
-      - name: Set up Prismaa
+      - name: Set up Prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           npm install
           npx prisma generate
+          npx prisma migrate deploy
 
-      - name: Build and Push Docker Image
+      - name: Konfigurasi Koneksi Cloud SQL dan Deploy ke Cloud Run
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+          SERVICE_NAME: backend-api
+          REGION: us-central1
         run: |
+          export INSTANCE_CONNECTION_NAME="capstone-deploy-408008:us-central1:dbfaqih"
+          export DB_USER="root"
+          export DB_PASSWORD="123456"
+          export DB_NAME="dbfaqih"
+
+          # Menambahkan konfigurasi koneksi ke Prisma Environment
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+
+          # Membuat symlink untuk Unix socket
+          sudo mkdir /cloudsql
+          sudo chmod 777 /cloudsql
+          sudo ln -nfs /cloudsql capstone-deploy-408008:us-central1:dbfaqih
+
+          # Membangun dan unggah Docker Image
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest --build-arg PORT=4000 .
           docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest
 
-      - name: Debug
-        run: ls -R
 
-      # - name: Deploy Docker Image to Cloud Run
-      #   run: |
-      #     gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
-      #       --image asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest \
-      #       --region asia-southeast2 \
-      #       --platform managed \
-      #       --allow-unauthenticated \
-      #       --port 5000 \
-      #       --set-env-vars="DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" \
-      #       --update-env-vars=DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
+          gcloud run deploy $SERVICE_NAME \
+            --image us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest \
+            --platform managed \
+            --region $REGION \
+            --allow-unauthenticated
+
+# ------------------------------------------------------------------------------------------------
+# name: Deploy Backend CI/CD Pipeline
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Code Checkout
+#         uses: actions/checkout@v2
+
+#       - name: Install the gcloud CLI
+#         uses: google-github-actions/setup-gcloud@v0
+#         with:
+#           project_id: ${{ secrets.GOOGLE_PROJECT }}
+#           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#           export_default_credentials: true
+
+#       - name: Set up Prismaa
+#         env:
+#           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#         run: |
+#           npm install
+#           npx prisma migrate deploy
+
+#       - name: Build and Push Docker Image
+#         env:
+#           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+#         run: |
+#           gcloud auth configure-docker us-central1-docker.pkg.dev
+#           docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest --build-arg PORT=4000 .
+#           docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest
+
+#       - name: Debug
+#         run: ls -R
+
+# - name: Deploy Docker Image to Cloud Run
+#   run: |
+#     gcloud run deploy ${{ secrets.DEPLOY_NAME }} \
+#       --image asia-southeast1-docker.pkg.dev/$GOOGLE_PROJECT/backend-deploy/nginx:latest \
+#       --region asia-southeast2 \
+#       --platform managed \
+#       --allow-unauthenticated \
+#       --port 5000 \
+#       --set-env-vars="DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" \
+#       --update-env-vars=DB_NAME=${{ secrets.DB_NAME }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_HOSTNAME=${{ secrets.DB_HOSTNAME }},REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }},ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
