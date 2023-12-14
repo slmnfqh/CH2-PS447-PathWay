@@ -23,8 +23,6 @@ jobs:
           export_default_credentials: true
 
       - name: Set up Prismaa
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           npm install
           npx prisma migrate deploy
