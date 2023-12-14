@@ -27,7 +27,7 @@ jobs:
           npm install
           npx prisma migrate deploy
 
-      - name: Build and Push Docker Imagee
+      - name: Build and Push Docker Image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
