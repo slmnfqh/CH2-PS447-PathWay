@@ -24,7 +24,7 @@ jobs:
 
       - name: Set up Prisma
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: "mysql://root:123456@/dbfaqih?host=/cloudsql/capstone-deploy-408008:us-central1:dbfaqih"
         run: |
           npm install
           npx prisma generate
@@ -42,7 +42,7 @@ jobs:
           export DB_NAME="dbfaqih"
 
           # Menambahkan konfigurasi koneksi ke Prisma Environment
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "DATABASE_URL="mysql://root:123456@/dbfaqih?host=/cloudsql/capstone-deploy-408008:us-central1:dbfaqih"" >> .env
 
           # Membuat symlink untuk Unix socket
           sudo mkdir /cloudsql
