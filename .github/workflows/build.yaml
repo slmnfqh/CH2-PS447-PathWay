@@ -46,18 +46,19 @@ jobs:
           # Membuat symlink untuk Unix socket
           sudo mkdir /cloudsql
           sudo chmod 777 /cloudsql
-          sudo ln -nfs /cloudsql/$INSTANCE_CONNECTION_NAME /cloudsql
+          sudo ln -nfs /cloudsql /cloudsql
+
 
           # Membangun dan unggah Docker Image
           gcloud auth configure-docker us-central1-docker.pkg.dev
-          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest --build-arg PORT=4000 .
-          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest
+          docker build -t us-central1-docker.pkg.dev/${GOOGLE_PROJECT}/backend-api/nginx:latest --build-arg PORT=4000 .
+          docker push us-central1-docker.pkg.dev/${GOOGLE_PROJECT}/backend-api/nginx:latest
 
           # Deploy ke Cloud Run
-          gcloud run deploy $SERVICE_NAME \
-            --image us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest \
+          gcloud run deploy ${SERVICE_NAME} \
+            --image us-central1-docker.pkg.dev/${GOOGLE_PROJECT}/backend-api/nginx:latest \
             --platform managed \
-            --region $REGION \
+            --region ${REGION} \
             --allow-unauthenticated
 
 # ------------------------------------------------------------------------------------------------
