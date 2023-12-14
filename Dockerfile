@@ -11,6 +11,8 @@ COPY package*.json ./
 
 # Menginstal dependensi yang diperlukan
 RUN npm install
+RUN npx prisma generate
+RUN npm install @prisma/client
 
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
