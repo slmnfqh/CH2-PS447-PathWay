@@ -23,7 +23,8 @@ jobs:
 
       - name: Set up Prisma
         env:
-          DATABASE_URL: "mysql://root:@/dbfaqih?host=capstone-deploy-408008:us-central1:dbfaqih"
+          DATABASE_URL: "mysql://root:123456@localhost:3306/dbfaqih?socketPath=/cloudsql/capstone-deploy-408008:us-central1:dbfaqih"
+
         run: |
           npm install
           npx prisma generate
