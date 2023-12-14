@@ -11,7 +11,7 @@ const {
 
 const searchUniversity = async (req, res) => {
   const { universitas } = req.body;
-  if (!req.body || !universitas) {
+  if (!req.body) {
     return res.status(400).json({
       status: "failed",
       message: "Tidak ada universitas dicari",
@@ -19,16 +19,16 @@ const searchUniversity = async (req, res) => {
   }
   try {
     const response = await getSearchUniversity(universitas);
-    if (
-      response.pt.length === 1 &&
-      response.pt.text ===
-        `Cari kata kunci ${universitas} pada Data Perguruan Tinggi`
-    ) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Universitas tidak ditemukan",
-      });
-    }
+    // if (
+    //   response.pt.length === 1 &&
+    //   response.pt.text ===
+    //     `Cari kata kunci ${universitas} pada Data Perguruan Tinggi`
+    // ) {
+    //   return res.status(400).json({
+    //     status: "failed",
+    //     message: "Universitas tidak ditemukan",
+    //   });
+    // }
     const result = response.pt.map((index) => {
       const data = index.text.split(", ");
       const university = data[0].split(": ");
@@ -39,11 +39,11 @@ const searchUniversity = async (req, res) => {
         index["website-link"].lastIndexOf("/") + 1
       );
       return {
-        id,
-        university,
-        npsn,
-        singkatan,
-        alamat,
+        id: id,
+        university: university[1],
+        npsn: npsn[1],
+        singkatan: singkatan[1],
+        alamat: alamat[1],
       };
     });
     res.json({
