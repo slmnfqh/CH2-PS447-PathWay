@@ -19,16 +19,6 @@ const searchUniversity = async (req, res) => {
   }
   try {
     const response = await getSearchUniversity(universitas);
-    // if (
-    //   response.pt.length === 1 &&
-    //   response.pt.text ===
-    //     `Cari kata kunci ${universitas} pada Data Perguruan Tinggi`
-    // ) {
-    //   return res.status(400).json({
-    //     status: "failed",
-    //     message: "Universitas tidak ditemukan",
-    //   });
-    // }
     const result = response.pt.map((index) => {
       const data = index.text.split(", ");
       const university = data[0].split(": ");

@@ -6,9 +6,9 @@ const router = express.Router();
 const Controller = require("../controllers/universitas");
 
 router.post("/cari", Controller.searchUniversity);
-router.get("/detail", Controller.universityDetail);
-router.get("/prodi", Controller.prodiAtUniversity);
-router.get("/cari/prodi", Controller.searchProdi);
-router.get("/prodi/detail", Controller.prodiDetail);
+router.post("/detail", Controller.universityDetail);
+router.post("/prodi", Controller.prodiAtUniversity);
+router.post("/cari/prodi", Controller.searchProdi);
+router.post("/prodi/detail", Controller.prodiDetail);
 
 module.exports = router;
