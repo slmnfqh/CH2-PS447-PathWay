@@ -22,7 +22,7 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           export_default_credentials: true
 
-      - name: Set up Prisma
+      - name: Set up Prismaa
         run: |
           npm install
           npx prisma migrate deploy
