@@ -23,15 +23,18 @@ jobs:
 
       - name: Set up Prisma
         run: |
-          npx prisma generate dev
+          npm install
+          npx prisma db push
+          npx prisma generate
+          npx prisma migrate deploy
 
-      - name: Build and Push Docker ImagE
+      - name: Build and Push Docker Image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
-          docker build -t us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest --build-arg PORT=4000 .
-          docker push us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest
+          docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest --build-arg PORT=4000 .
+          docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/backend-api/nginx:latest
 
       - name: Debug
         run: ls -R
