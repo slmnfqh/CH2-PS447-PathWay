@@ -24,10 +24,7 @@ jobs:
       - name: Set up Prisma
         run: |
           npx prisma generate
-
-      - name: Set up PostgreSQL connection
-        run: echo "DATABASE_URL=postgresql://postgres:123456@hcapstone-deploy-408008:us-central1:db-backend" >> $GITHUB_ENV
-        # Replace 'username', 'password', 'host', 'port', and 'dbname' with your actual database credentials
+          npx prisma db push
 
       - name: Build and Push Docker Imagee
         env:
