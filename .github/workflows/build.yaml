@@ -24,7 +24,6 @@ jobs:
       - name: Set up Prismaa
         run: |
           npx prisma generate
-          npx prisma db push
 
       - name: Build and Push Docker Image
         env:
