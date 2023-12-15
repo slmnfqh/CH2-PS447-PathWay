@@ -26,7 +26,7 @@ jobs:
           npx prisma generate
           npx prisma db push
 
-      - name: Build and Push Docker Imagee
+      - name: Build and Push Docker Image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
