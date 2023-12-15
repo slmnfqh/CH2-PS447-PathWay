@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:123456@capstone-deploy-408008:us-central1:db-backend:5432/users"
+  url      = "postgresql://postgres:123456@35.225.86.178:5432/users"
 }
 
 
