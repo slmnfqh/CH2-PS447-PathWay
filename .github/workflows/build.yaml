@@ -25,9 +25,6 @@ jobs:
         run: |
           npx prisma generate
 
-      - name: Authenticate Docker with Artifact Registry
-        run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | docker login -u _json_key --password-stdin us-central1-docker.pkg.dev
-
       - name: Build and Push Docker Image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
