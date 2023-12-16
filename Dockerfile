@@ -16,7 +16,7 @@ RUN npm install
 COPY . .
 
 # Menggunakan variabel lingkungan untuk menentukan port yang akan diexpose
-ARG PORT
+ARG PORT=4000
 ENV PORT $PORT
 EXPOSE $PORT/tcp
 
