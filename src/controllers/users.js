@@ -52,7 +52,7 @@ const register = async (req, res) => {
       data: {
         name: name,
         email: email,
-        password: password,
+        password: hashPassword,
       },
     });
     res.status(200).json({ message: "Register sucessfull !", data: newData });
