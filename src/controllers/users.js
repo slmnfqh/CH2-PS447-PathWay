@@ -9,40 +9,40 @@ require("dotenv").config();
 // REGISTER
 const register = async (req, res) => {
   const { name, email, password } = req.body;
-  const errors = {};
+  // const errors = {};
 
-  if (!validator.isAlpha(name)) {
-    errors.name = "name hanya boleh mengandung alphabet !";
-  }
+  // if (!validator.isAlpha(name)) {
+  //   errors.name = "name hanya boleh mengandung alphabet !";
+  // }
 
-  if (!validator.isAlpha(name)) {
-    errors.name = "name hanya boleh mengandung alphabet !";
-  }
+  // if (!validator.isAlpha(name)) {
+  //   errors.name = "name hanya boleh mengandung alphabet !";
+  // }
 
-  if (!validator.isEmail(email)) {
-    errors.email = "Email harus berformat email !";
-  }
+  // if (!validator.isEmail(email)) {
+  //   errors.email = "Email harus berformat email !";
+  // }
 
-  if (password.length < 8) {
-    errors.password = "Password minimal 8 karakter !";
-  }
+  // if (password.length < 8) {
+  //   errors.password = "Password minimal 8 karakter !";
+  // }
 
-  const checkEmail = await prisma.users.findFirst({
-    where: {
-      email: email,
-    },
-  });
+  // const checkEmail = await prisma.users.findFirst({
+  //   where: {
+  //     email: email,
+  //   },
+  // });
 
-  if (checkEmail) {
-    errors.email = "Email sudah terdaftar !";
-  }
+  // if (checkEmail) {
+  //   errors.email = "Email sudah terdaftar !";
+  // }
 
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({
-      message: "Register failed !",
-      errors,
-    });
-  }
+  // if (Object.keys(errors).length > 0) {
+  //   return res.status(400).json({
+  //     message: "Register failed !",
+  //     errors,
+  //   });
+  // }
 
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);

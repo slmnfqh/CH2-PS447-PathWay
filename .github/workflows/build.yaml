@@ -25,7 +25,7 @@ jobs:
         run: |
           npx prisma generate
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker ImagE
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
@@ -35,4 +35,4 @@ jobs:
 
       - name: Debug
         run: ls -R
-# -------------------------------------------------------------
+# --------------------------------------------------------------------
