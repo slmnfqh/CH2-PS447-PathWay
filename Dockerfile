@@ -11,6 +11,8 @@ COPY package*.json ./
 
 # Menginstal dependensi yang diperlukan
 RUN npm install
+RUN npx prisma init
+RUN npx prisma init
 
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
