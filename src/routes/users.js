@@ -11,10 +11,10 @@ router.post("/register", userController.register);
 router.post("/login", userController.login);
 
 // GET ALL USERS ROUTE
-router.get("/users", verifyToken, userController.getAllUsers);
+// router.get("/users", verifyToken, userController.getAllUsers);
 
 // GET REFRESH TOKEN ROUTE
-router.get("/token", userController.getRefreshToken);
+// router.get("/token", userController.getRefreshToken);
 
 // LOGOUT ROUTE
 router.delete("/logout", userController.logout);

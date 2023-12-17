@@ -3,7 +3,7 @@
 const prisma = require("../config/db_conect");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // REGISTER
@@ -101,43 +101,42 @@ const login = async (req, res) => {
         },
       });
 
-    const userId = user.id;
-    const name = user.name;
-    const email = user.email;
+    // const userId = user.id;
+    // const name = user.name;
+    // const email = user.email;
 
-    const accessToken = jwt.sign(
-      { userId, name, email },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "20s",
-      }
-    );
+    // const accessToken = jwt.sign(
+    //   { userId, name, email },
+    //   process.env.ACCESS_TOKEN_SECRET,
+    //   {
+    //     expiresIn: "20s",
+    //   }
+    // );
 
-    const refreshToken = jwt.sign(
-      { userId, name, email },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
+    // const refreshToken = jwt.sign(
+    //   { userId, name, email },
+    //   process.env.REFRESH_TOKEN_SECRET,
+    //   {
+    //     expiresIn: "1d",
+    //   }
+    // );
 
-    await prisma.users.update({
-      where: {
-        id: userId,
-      },
-      data: { refresh_token: refreshToken },
-    });
+    // await prisma.users.update({
+    //   where: {
+    //     id: userId,
+    //   },
+    //   data: { refresh_token: refreshToken },
+    // });
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      secure: true,
-      sameSite: "None",
-    });
+    // res.cookie("refreshToken", refreshToken, {
+    //   httpOnly: true,
+    //   maxAge: 24 * 60 * 60 * 1000,
+    //   secure: true,
+    //   sameSite: "None",
+    // });
 
     res.json({
       message: "Login successfull !",
-      accessToken,
     });
   } catch (error) {
     res.status(400).json({
@@ -151,65 +150,65 @@ const login = async (req, res) => {
 };
 
 // GET ALL USERS
-const getAllUsers = async (req, res) => {
-  try {
-    const data = await prisma.users.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-      },
-    });
-    res.json({
-      success: "true",
-      data: data,
-    });
-  } catch (error) {
-    res.json({
-      success: "false",
-      message: error.message,
-    });
-  }
-};
+// const getAllUsers = async (req, res) => {
+//   try {
+//     const data = await prisma.users.findMany({
+//       select: {
+//         id: true,
+//         name: true,
+//         email: true,
+//       },
+//     });
+//     res.json({
+//       success: "true",
+//       data: data,
+//     });
+//   } catch (error) {
+//     res.json({
+//       success: "false",
+//       message: error.message,
+//     });
+//   }
+// };
 
 // GET REFRESH TOKEN
-const getRefreshToken = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
-  try {
-    if (!refreshToken) return res.sendStatus(401);
-    const user = await prisma.users.findFirst({
-      where: {
-        refresh_token: req.body.refreshToken,
-      },
-    });
-    if (!user) return res.sendStatus(403);
+// const getRefreshToken = async (req, res) => {
+//   const refreshToken = req.cookies.refreshToken;
+//   try {
+//     if (!refreshToken) return res.sendStatus(401);
+//     const user = await prisma.users.findFirst({
+//       where: {
+//         refresh_token: req.body.refreshToken,
+//       },
+//     });
+//     if (!user) return res.sendStatus(403);
 
-    jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      (err, decoded) => {
-        if (err) return res.sendStatus(403);
-        const userId = user.id;
-        const name = user.name;
-        const email = user.email;
+//     jwt.verify(
+//       refreshToken,
+//       process.env.REFRESH_TOKEN_SECRET,
+//       (err, decoded) => {
+//         if (err) return res.sendStatus(403);
+//         const userId = user.id;
+//         const name = user.name;
+//         const email = user.email;
 
-        const accessToken = jwt.sign(
-          { userId, name, email },
-          process.env.ACCESS_TOKEN_SECRET,
-          {
-            expiresIn: "10s",
-          }
-        );
-        res.json({ accessToken });
-      }
-    );
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ message: "Terjadi kesalahan pada server", error: error.message });
-  }
-};
+//         const accessToken = jwt.sign(
+//           { userId, name, email },
+//           process.env.ACCESS_TOKEN_SECRET,
+//           {
+//             expiresIn: "10s",
+//           }
+//         );
+//         res.json({ accessToken });
+//       }
+//     );
+//   } catch (error) {
+//     console.log(error);
+//     res
+//       .status(500)
+//       .json({ message: "Terjadi kesalahan pada server", error: error.message });
+//   }
+// };
 
 // LOGOUT
 const logout = async (req, res) => {
@@ -235,4 +234,4 @@ const logout = async (req, res) => {
   return res.sendStatus(200);
 };
 
-module.exports = { getAllUsers, register, login, getRefreshToken, logout };
+module.exports = { register, login, logout };
