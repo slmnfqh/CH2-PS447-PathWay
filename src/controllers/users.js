@@ -9,6 +9,14 @@ require("dotenv").config();
 // REGISTER
 const register = async (req, res) => {
   const { name, email, password } = req.body;
+
+  if (!req.body || !name || !email || !password) {
+    res.status(400).json({
+      status: "failed",
+      message: " Silahkan isi data terlebih dahulu ",
+    });
+  }
+
   const errors = {};
 
   if (!validator.isAlpha(name)) {
@@ -68,6 +76,12 @@ const register = async (req, res) => {
 // LOGIN
 const login = async (req, res) => {
   const { email, password } = req.body;
+  if (!req.body || !email || !password) {
+    res.status(400).json({
+      status: "failed",
+      message: " Silahkan isi data terlebih dahulu ",
+    });
+  }
 
   let errors = {};
 
