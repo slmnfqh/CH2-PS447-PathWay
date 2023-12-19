@@ -15,10 +15,16 @@ RUN npm install
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
 
+# Menginstal PM2 secara global
+RUN npm install -g pm2
+
+# Copy file konfigurasi PM2 ke dalam kontainer
+COPY ecosystem.config.js .
+
 # Menggunakan variabel lingkungan untuk menentukan port yang akan diexpose
 ARG PORT
 ENV PORT $PORT
 EXPOSE $PORT/tcp
 
-# Menjalankan perintah untuk menjalankan aplikasi
-CMD ["npm", "start"]
+# Menjalankan perintah untuk menjalankan aplikasi menggunakan PM2
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]
