@@ -21,34 +21,13 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           export_default_credentials: true
 
-      - name: Set up Cloud SQL Proxy
-        run: |
-          wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
-          chmod +x cloud_sql_proxy
-          ./cloud_sql_proxy -instances=capstone-deploy-408008:us-central1:db-backend=tcp:3306 &
-
       - name: Build and Push Docker Image
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-          DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest --build-arg PORT=4000 .
           docker push us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest
-
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy ${{ secrets.SERVICE_NAME }} \
-            --image us-central1-docker.pkg.dev/capstone-deploy-408008/backend-api/nginx:latest \
-            --region us-central1 \
-            --platform managed \
-            --allow-unauthenticated \
-            --port 4000 \
-            --set-env-vars=DB_HOSTNAME=${DB_HOSTNAME},DB_PORT=${DB_PORT},DB_USERNAME=${DB_USERNAME},DB_PASSWORD=${DB_PASSWORD},DB_NAME=${DB_NAME}
 
       - name: Debug
         run: ls -R
