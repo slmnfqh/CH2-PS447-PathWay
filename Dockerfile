@@ -25,4 +25,5 @@ ENV PORT $PORT
 EXPOSE $PORT/tcp
 
 # Menjalankan perintah untuk menghasilkan schema Prisma dan menjalankan aplikasi
-CMD ["npm", "run", "start"]
+CMD ["npx", "prisma", "generate", "&&", "npm", "run", "start"]
+
