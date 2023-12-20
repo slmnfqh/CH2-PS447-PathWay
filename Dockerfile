@@ -12,6 +12,7 @@ RUN npm install
 
 # Menginstal Prisma CLI secara global
 RUN npm install -g prisma
+RUN npx prisma migrate dev
 
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
