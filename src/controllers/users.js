@@ -1,8 +1,10 @@
 /** @format */
 
-const prisma = require("../config/db_conect");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const Users = require("../models/users");
+const { nanoid } = require("nanoid");
+
 // const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -35,7 +37,7 @@ const register = async (req, res) => {
     errors.password = "Password minimal 8 karakter !";
   }
 
-  const checkEmail = await prisma.users.findFirst({
+  const checkEmail = await Users.findOne({
     where: {
       email: email,
     },
@@ -52,16 +54,16 @@ const register = async (req, res) => {
     });
   }
 
+  const id = nanoid(15);
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
 
   try {
-    const newData = await prisma.users.create({
-      data: {
-        name: name,
-        email: email,
-        password: hashPassword,
-      },
+    const newData = await Users.create({
+      id: id,
+      name: name,
+      email: email,
+      password: hashPassword,
     });
     res.status(200).json({ message: "Register sucessfull !", data: newData });
   } catch (error) {
@@ -101,7 +103,7 @@ const login = async (req, res) => {
   }
 
   try {
-    const user = await prisma.users.findFirst({
+    const user = await Users.findOne({
       where: {
         email: req.body.email,
       },
@@ -225,27 +227,27 @@ const login = async (req, res) => {
 // };
 
 // LOGOUT
-const logout = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
+// const logout = async (req, res) => {
+//   const refreshToken = req.cookies.refreshToken;
 
-  if (!refreshToken) return res.sendStatus(204);
-  const user = await prisma.users.findFirst({
-    where: {
-      refresh_token: req.body.refreshToken,
-    },
-  });
-  if (!user) return res.sendStatus(204);
-  const userId = user.id;
-  await prisma.users.update({
-    data: {
-      refresh_token: null,
-    },
-    where: {
-      id: userId,
-    },
-  });
-  res.clearCookie("refreshToken");
-  return res.sendStatus(200);
-};
+//   if (!refreshToken) return res.sendStatus(204);
+//   const user = await prisma.users.findFirst({
+//     where: {
+//       refresh_token: req.body.refreshToken,
+//     },
+//   });
+//   if (!user) return res.sendStatus(204);
+//   const userId = user.id;
+//   await prisma.users.update({
+//     data: {
+//       refresh_token: null,
+//     },
+//     where: {
+//       id: userId,
+//     },
+//   });
+//   res.clearCookie("refreshToken");
+//   return res.sendStatus(200);
+// };
 
-module.exports = { register, login, logout };
+module.exports = { register, login };

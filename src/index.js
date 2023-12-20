@@ -3,8 +3,20 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const db = require("./config/database.js");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+
+const dbConnect = async () => {
+  try {
+    await db.authenticate();
+    console.log("Database connected..");
+    await db.sync();
+  } catch (error) {
+    console.log(error);
+  }
+};
+dbConnect();
 
 const port = process.env.PORT || 8080;
 
