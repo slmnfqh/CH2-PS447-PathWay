@@ -27,7 +27,7 @@ jobs:
           chmod +x cloud_sql_proxy
           ./cloud_sql_proxy -instances=capstone-deploy-408008:us-central1:db-backend=tcp:3306 &
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker Imagee
         env:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
           DB_HOSTNAME: ${{ secrets.DB_HOSTNAME }}
