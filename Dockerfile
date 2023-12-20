@@ -1,5 +1,3 @@
-# Dockerfile
-
 # Menggunakan image dasar Node.js
 FROM node:16
 
@@ -12,19 +10,19 @@ COPY package*.json ./
 # Menginstal dependensi yang diperlukan
 RUN npm install
 
+# Menginstal Prisma CLI secara global
+RUN npm install -g prisma
+
 # Menyalin semua file aplikasi ke direktori kerja
 COPY . .
 
-# Menginstal PM2 secara global
-RUN npm install -g pm2
-
-# Copy file konfigurasi PM2 ke dalam kontainer
-COPY ecosystem.config.js .
+# Menyalin file konfigurasi Prisma
+COPY prisma ./prisma
 
 # Menggunakan variabel lingkungan untuk menentukan port yang akan diexpose
 ARG PORT
 ENV PORT $PORT
 EXPOSE $PORT/tcp
 
-# Menjalankan perintah untuk menjalankan aplikasi menggunakan PM2
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+# Menjalankan perintah untuk menghasilkan schema Prisma dan menjalankan aplikasi
+CMD ["npm", "run", "start"]

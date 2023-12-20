@@ -25,6 +25,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
+          npx prisma init
           npx prisma generate
           npx prisma migrate dev
 
