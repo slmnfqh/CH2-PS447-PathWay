@@ -3,18 +3,14 @@
 // answer.js
 const { DataTypes } = require("sequelize");
 const db = require("../config/database.js");
-const Questions = require("./questions.js"); // Pastikan untuk mengganti sesuai dengan path ke model Questions
 
-// answer.js
 const Answer = db.define("Answer", {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
   },
-  answer: DataTypes.STRING,
-  percentage: DataTypes.INTEGER,
+  Question: DataTypes.STRING,
+  Prediksi_Jurusan: DataTypes.STRING, // Sesuaikan dengan tipe data yang diterima dari respons ML
 });
 
-Questions.hasMany(Answer, { foreignKey: "id_question" });
-Answer.belongsTo(Questions, { foreignKey: "id_question" });
 module.exports = Answer;
