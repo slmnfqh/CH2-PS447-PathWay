@@ -4,7 +4,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database.js");
 
-const Answer = db.define("Answer", {
+const Answer = db.define("answer", {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
