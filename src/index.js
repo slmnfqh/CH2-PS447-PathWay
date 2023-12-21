@@ -11,7 +11,7 @@ const dbConnect = async () => {
   try {
     await db.authenticate();
     console.log("Database connected..");
-    await db.sync();
+    // await db.sync();
   } catch (error) {
     console.log(error);
   }
