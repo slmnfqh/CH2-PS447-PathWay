@@ -13,7 +13,7 @@ const Answer = db.define("Answer", {
   rekomendasi_jurusan: DataTypes.STRING, // Sesuaikan dengan tipe data yang diterima dari respons ML
   rekomendasi_karir: DataTypes.JSON, // Sesuaikan dengan tipe data yang diterima dari respons ML
   recommended_labels: DataTypes.JSON, // Sesuaikan dengan tipe data yang diterima dari respons ML
-  similarities: DataTypes.FLOAT(255), // Sesuaikan dengan tipe data yang diterima dari respons ML
+  similarities: DataTypes.STRING(255), // Sesuaikan dengan tipe data yang diterima dari respons ML
 });
 
 module.exports = Answer;
