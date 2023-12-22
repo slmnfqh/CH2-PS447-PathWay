@@ -16,7 +16,7 @@ const getAnswer = async (req, res) => {
     const mlResponse = await axios.post(
       "https://endpoint-ml-hzihrybpka-uc.a.run.app/predict",
       {
-        user_input: question,
+        text: question,
       }
     );
 
@@ -25,13 +25,19 @@ const getAnswer = async (req, res) => {
     await Answer.create({
       id: id,
       Question: question,
-      Prediksi_Jurusan: mlResponse.data["Prediksi Jurusan"], // Sesuaikan dengan struktur respons ML
+      rekomendasi_jurusan: mlResponse.data["Rekomendasi Jurusan"], // Sesuaikan dengan struktur respons ML
+      rekomendasi_karir: mlResponse.data["Rekomendasi Karir"],
+      recommended_labels: mlResponse.data["recommended_labels"],
+      similarities: mlResponse.data["similarities"],
     });
 
     const jsonResponse = {
       id_question: id,
       message: "Question created successfully",
-      "Prediksi Jurusan": mlResponse.data["Prediksi Jurusan"],
+      "Prediksi Jurusan": mlResponse.data["Rekomendasi Jurusan"],
+      "Recommended alternatif": mlResponse.data["recommended_labels"],
+      "Rekomendasi Karir": mlResponse.data["Rekomendasi Karir"],
+      similarities: mlResponse.data["similarities"],
     };
     res.status(201).json(jsonResponse);
   } catch (error) {
